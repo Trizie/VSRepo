@@ -13,18 +13,20 @@ class TestProduct(MockDB):
             testObject.barcode = "4015533041525"
             self.assertEqual(testObject.get_productName(), "Haferdrink")
 
-    def test_get_amount(self):
-       with patch.object(Product, "__init__", lambda x, y: None):
+    def test_get_amount_from_DB(self):
+        with patch.object(Product, "__init__", lambda x, y: None):
             testObject = Product(None)
-            testObject.barcode = 815
-            self.assertEqual(testObject.get_amount_from_DB(), 7)
+            testObject.barcode = 200
+        with self.mock_db_config:
+            self.assertEqual(testObject.get_amount_from_DB(), 1)
 
     def test_check_DB_contains_barcode(self):
 
         with patch.object(Product, "__init__", lambda x, y: None):
             testObject = Product(None)
             testObject.barcode = 815
-        self.assertEqual(testObject.check_DB_contains_barcode(), "True")
+        with self.mock_db_config:
+            self.assertEqual(testObject.check_DB_contains_barcode(), "True")
 
     def test_add_product_to_DB(self):
         with patch.object(Product, "__init__", lambda x, y: None):
