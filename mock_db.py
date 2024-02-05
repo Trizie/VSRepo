@@ -57,8 +57,8 @@ class MockDB(TestCase):
             print("OK")
 
         insert_data_query = """INSERT INTO `lebensmittel` (`Barcode`, `Lebensmittel`, `Anzahl`) VALUES
-                            ('815', 'Testprodukt', 7),
-                            ('200', 'Testprodukt_2',1)"""
+                            ('815', 'Testprodukt', '7'),
+                            ('200', 'Testprodukt_2', '1')"""
         try:
             cursor.execute(insert_data_query)
             cnx.commit()
