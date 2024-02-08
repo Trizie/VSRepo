@@ -4,7 +4,6 @@ from unittest.mock import patch
 from mock_db import MockDB
 
 
-
 class TestProduct(MockDB):
 #comment
     def test_get_productName(self):
