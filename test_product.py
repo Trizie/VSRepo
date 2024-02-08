@@ -45,7 +45,7 @@ class TestProduct(MockDB):
 
         with patch.object(Product, "__init__", lambda x, y: None):
             testObject = Product(None)
-            testObject.barcode = 200
+            testObject.barcode = 815
 
         with self.mock_db_config:
             self.assertEqual(testObject.delete_product_from_DB(), "True")
