@@ -66,7 +66,7 @@ class TestProduct(MockDB):
         mock_get_amount_from_DB.return_value = 1
         with patch.object(Product, "__init__", lambda x, y: None):
             testObject = Product(None)
-            testObject.barcode = 815
+            testObject.barcode = 200
         with self.mock_db_config:
             self.assertEqual(testObject.decrease_amount_of_product_in_DB(), "True")
 
