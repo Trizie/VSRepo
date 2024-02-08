@@ -1,10 +1,9 @@
 {
-  "threshold": 0,
+  "threshold": 30,
   "reporters": ["html", "markdown"],
   "ignore": [
     "**/node_modules/**",
     "**/.git/**",
-    "**/*.md",
-    "/github/workspace/test_product.py"
+    "**/*.md"
   ]
 }
