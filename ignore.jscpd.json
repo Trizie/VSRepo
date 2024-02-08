@@ -4,6 +4,7 @@
   "ignore": [
     "**/node_modules/**",
     "**/.git/**",
-    "**/*.md"
+    "**/*.md",
+    "**/test_product.py"
   ]
 }

@@ -4,6 +4,7 @@ from unittest.mock import patch
 from mock_db import MockDB
 from product import Product
 
+
 class TestProduct(MockDB):
     def test_get_productName(self):
         with patch.object(Product, "__init__", lambda x, y: None):
