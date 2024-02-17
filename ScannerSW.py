@@ -6,11 +6,11 @@ import mysql.connector
 from mysql.connector import errorcode
 import product
 
-broker = '192.168.2.31'
+broker = "192.168.2.31"
 port = 1883
 topic = "arduino/barcode"
 deleteTopic = "arduino/delete"
-client_id = f'subscribe-{random.randint(0, 100)}'
+client_id = f"subscribe-{random.randint(0, 100)}"
 
 product = product.Product(0, False, False, False, 1)
 
@@ -35,7 +35,7 @@ def subscribe(client: mqtt_client):
         try:
             if msg.topic == "arduino/barcode":
                 barcodeValue = str(msg.payload.decode("utf-8"))
-                product.barcode = barcodeValue.replace('\r', '')
+                product.barcode = barcodeValue.replace("\r", "")
                 print(product.barcode)
                 product.barcodeStatus = True
             else:
@@ -49,13 +49,13 @@ def subscribe(client: mqtt_client):
                 print("delete message not sent")
                 product.deleteStatus = False
 
-
             if ((product.barcodeStatus == True) and (product.deleteStatus == True)):
-                print("Beide Statusmeldungen (Barcodestatus und Löschstatus) sind angekommen.")
+                print(
+                    "Beide Statusmeldungen (Barcodestatus und Löschstatus) sind angekommen."
+                )
                 product.barcodeStatus = False
                 product.deleteStatus = False
                 productName = product.get_productName()
-
 
                 if not product.check_delete(delMes):
                     print("Programm ist im Speichermodus")
@@ -65,13 +65,16 @@ def subscribe(client: mqtt_client):
                     elif product.check_DB_contains_barcode() == "False":
                         print("Produkt ist neu")
                         product.add_product_to_DB(productName)
-                    else: print("Es gibt ein Problem mit dem Checken des Barcodes")
+                    else:
+                        print("Es gibt ein Problem mit dem Checken des Barcodes")
                 else:
                     print("Produkt wird gelöscht")
                     product.delete_product_from_DB()
 
             else:
-                print("Es sind nicht beide Statusmeldungen (Barcodestatus und Löschstatus) angekommmen")
+                print(
+                    "Es sind nicht beide Statusmeldungen (Barcodestatus und Löschstatus) angekommmen"
+                )
 
 
         except:
@@ -82,13 +85,11 @@ def subscribe(client: mqtt_client):
     client.on_message = on_message
 
 
-
 def run():
     client = connect_mqtt()
     subscribe(client)
     client.loop_forever()
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     run()
