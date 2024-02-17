@@ -92,3 +92,4 @@ class MockDB(TestCase):
         except mysql.connector.Error as err:
             print("Database {} does not exists. Dropping db failed".format(MYSQL_DB))
         cnx.close()
+        
