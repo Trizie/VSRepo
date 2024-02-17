@@ -46,7 +46,7 @@ void loop() {
     
   display.print(buffer);
   display.display();
-  delay(5000);
+  delay(1000);
   }
 
 }

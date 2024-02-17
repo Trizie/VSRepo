@@ -14,8 +14,6 @@ client_id = f"subscribe-{random.randint(0, 100)}"
 
 product = product.Product(0, False, False, False, 1)
 
-
-
 def connect_mqtt() -> mqtt_client:
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
@@ -93,3 +91,4 @@ def run():
 
 if __name__ == "__main__":
     run()
+
