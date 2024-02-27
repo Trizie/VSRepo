@@ -33,4 +33,4 @@ jobs:
         pip install -r ./Requirements.txt
 
     - name: Test Code
-      run: python ./main_test.py
+      run: python ./main_product.py
