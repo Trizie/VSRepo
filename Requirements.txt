@@ -1,13 +1,8 @@
-# Runtime dependencies
-python-dotenv==0.20.0
 
-# Code quality
-
-
-
-# Testing dependencies
 nose==1.3.7
-pinocchio==0.4.3
-coverage==6.3.2
+mysql.connector==8.0.30
+simplejson==3.16.0
+requests==2.22.0
+
 
 
