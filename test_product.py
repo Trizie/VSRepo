@@ -13,11 +13,11 @@ class TestProduct(MockDB):
             self.assertEqual(testObject.get_productName(), "Haferdrink")
 
     #def test_get_amount_from_DB(self):
-        #with patch.object(Product, "__init__", lambda x, y: None):
-            #testObject = Product(None)
-            #testObject.barcode = 815
-            # with self.mock_db_config:
-            #self.assertEqual(testObject.get_amount_from_DB(), 7)
+    #with patch.object(Product, "__init__", lambda x, y: None):
+    #testObject = Product(None)
+    #testObject.barcode = 815
+    # with self.mock_db_config:
+    #self.assertEqual(testObject.get_amount_from_DB(), 7)
 
     def test_check_DB_contains_barcode(self):
 
