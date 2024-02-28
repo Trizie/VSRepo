@@ -7,7 +7,7 @@ import product
 
 MYSQL_USER = "***REMOVED***"
 MYSQL_PASSWORD = "***REMOVED***"
-MYSQL_DB = "testdb"
+MYSQL_DB = "***REMOVED***testit"
 MYSQL_HOST = "88.198.240.70"
 MYSQL_PORT = "3306"
 
