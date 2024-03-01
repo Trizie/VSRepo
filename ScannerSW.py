@@ -1,9 +1,5 @@
 import random
 from paho.mqtt import client as mqtt_client
-import requests
-import json
-import mysql.connector
-from mysql.connector import errorcode
 import product
 
 broker = "192.168.2.31"
