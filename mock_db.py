@@ -13,14 +13,10 @@ MYSQL_PORT = "3306"
 
 
 class MockDB(TestCase):
-
     @classmethod
     def setUpClass(cls):
         cnx = mysql.connector.connect(
-            host=MYSQL_HOST,
-            user=MYSQL_USER,
-            password=MYSQL_PASSWORD,
-            port = MYSQL_PORT
+            host=MYSQL_HOST, user=MYSQL_USER, password=MYSQL_PASSWORD, port = MYSQL_PORT
         )
         cursor = cnx.cursor(dictionary=True)
 
@@ -33,8 +29,7 @@ class MockDB(TestCase):
 
         cursor = cnx.cursor(dictionary=True)
         try:
-            cursor.execute(
-                "CREATE DATABASE {}".format(MYSQL_DB))
+            cursor.execute("CREATE DATABASE {}".format(MYSQL_DB))
         except mysql.connector.Error as err:
             print("Failed creating database: {}".format(err))
             exit(1)
@@ -68,22 +63,19 @@ class MockDB(TestCase):
         cnx.close()
 
         testconfig ={
-            'host': MYSQL_HOST,
-            'user': MYSQL_USER,
-            'password': MYSQL_PASSWORD,
-            'database': MYSQL_DB
+            "host": MYSQL_HOST,
+            "user": MYSQL_USER,
+            "password": MYSQL_PASSWORD,
+            "database": MYSQL_DB
         }
         cls.mock_db_config = patch.dict(product.config, testconfig)
 
     @classmethod
     def tearDownClass(cls):
         cnx = mysql.connector.connect(
-            host=MYSQL_HOST,
-            user=MYSQL_USER,
-            password=MYSQL_PASSWORD
+            host=MYSQL_HOST, user=MYSQL_USER, password=MYSQL_PASSWORD
         )
         cursor = cnx.cursor(dictionary=True)
-
 
         try:
             cursor.execute("DROP DATABASE {}".format(MYSQL_DB))
