@@ -46,7 +46,7 @@ def subscribe(client: mqtt_client):
                 print("delete message not sent")
                 product.deleteStatus = False
 
-            if (product.barcodeStatus == True and product.deleteStatus == True):
+            if product.barcodeStatus == True and product.deleteStatus == True:
                 print(
                     "Beide Statusmeldungen (Barcodestatus und Löschstatus) sind angekommen."
                 )
