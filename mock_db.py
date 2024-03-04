@@ -1,9 +1,9 @@
 from unittest import TestCase
-import mysql.connector
-from mysql.connector import errorcode
 from unittest.mock import patch
-import product
 
+import mysql.connector
+import product
+from mysql.connector import errorcode
 
 MYSQL_USER = "***REMOVED***"
 MYSQL_PASSWORD = "***REMOVED***"
@@ -16,7 +16,7 @@ class MockDB(TestCase):
     @classmethod
     def setUpClass(cls):
         cnx = mysql.connector.connect(
-            host=MYSQL_HOST, user=MYSQL_USER, password=MYSQL_PASSWORD, port = MYSQL_PORT
+            host=MYSQL_HOST, user=MYSQL_USER, password=MYSQL_PASSWORD, port=MYSQL_PORT
         )
         cursor = cnx.cursor(dictionary=True)
 
@@ -62,11 +62,11 @@ class MockDB(TestCase):
         cursor.close()
         cnx.close()
 
-        testconfig ={
+        testconfig = {
             "host": MYSQL_HOST,
             "user": MYSQL_USER,
             "password": MYSQL_PASSWORD,
-            "database": MYSQL_DB
+            "database": MYSQL_DB,
         }
         cls.mock_db_config = patch.dict(product.config, testconfig)
 
@@ -84,4 +84,3 @@ class MockDB(TestCase):
         except mysql.connector.Error as err:
             print("Database {} does not exists. Dropping db failed".format(MYSQL_DB))
         cnx.close()
-        
