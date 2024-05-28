@@ -81,6 +81,6 @@ class MockDB(TestCase):
             cursor.execute("DROP DATABASE {}".format(MYSQL_DB))
             cnx.commit()
             cursor.close()
-        except mysql.connector.Error as err:
+        except mysql.connector.Error:
             print("Database {} does not exists. Dropping db failed".format(MYSQL_DB))
         cnx.close()
