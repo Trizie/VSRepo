@@ -9,7 +9,7 @@ MYSQL_USER = "***REMOVED***"
 MYSQL_PASSWORD = "***REMOVED***"
 MYSQL_DB = "***REMOVED***test"
 MYSQL_HOST = "88.198.240.70"
-MYSQL_PORT = "3306"
+MYSQL_PORT = 3306
 
 
 class MockDB(TestCase):
@@ -37,7 +37,7 @@ class MockDB(TestCase):
 
         query = """CREATE TABLE `lebensmittel` (
                   `Barcode` varchar(30) NOT NULL ,
-                  `Lebensmittel` text NOT NULL,
+                  `LebensmittelName` text NOT NULL,
                   `Anzahl` int NOT NULL
                 )"""
         try:
@@ -51,7 +51,7 @@ class MockDB(TestCase):
         else:
             print("OK")
 
-        insert_data_query = """INSERT INTO `lebensmittel` (`Barcode`, `Lebensmittel`, `Anzahl`) VALUES
+        insert_data_query = """INSERT INTO `lebensmittel` (`Barcode`, `LebensmittelName`, `Anzahl`) VALUES
                             ('815', 'Testprodukt', 7),
                             ('200', 'Testprodukt_2', 1)"""
         try:
@@ -67,6 +67,7 @@ class MockDB(TestCase):
             "user": MYSQL_USER,
             "password": MYSQL_PASSWORD,
             "database": MYSQL_DB,
+            "port": MYSQL_PORT,
         }
         cls.mock_db_config = patch.dict(product.config, testconfig)
 

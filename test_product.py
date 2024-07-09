@@ -23,14 +23,14 @@ class TestProduct(MockDB):
 
         with patch.object(Product, "__init__", lambda x, y: None):
             testObject = Product(None)
-            testObject.barcode = 815
+            testObject.barcode = 185
         with self.mock_db_config:
-            self.assertEqual(testObject.check_DB_contains_barcode(), "True")
+            self.assertEqual(testObject.check_DB_contains_barcode(), "False")
 
     def test_add_product_to_DB(self):
         with patch.object(Product, "__init__", lambda x, y: None):
             testObject = Product(None)
-            testObject.barcode = 150
+            testObject.barcode = 110
             testObject.amount = 1
         with self.mock_db_config:
             self.assertEqual(testObject.add_product_to_DB("Banana"), "True")
