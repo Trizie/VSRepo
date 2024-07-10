@@ -8,7 +8,6 @@ import sshtunnel
 from dotenv import load_dotenv
 from mysql.connector import errorcode
 
-
 load_dotenv()
 
 sshconfig = {
@@ -30,8 +29,8 @@ class MockDB(TestCase):
             ("ssh.pythonanywhere.com"),
             **sshconfig,
             remote_bind_address=(
-                    "***REMOVED***.mysql.pythonanywhere-services.com",
-                    3306,
+                "***REMOVED***.mysql.pythonanywhere-services.com",
+                3306,
             ),
         ) as tunnel:
             cnx = mysql.connector.connect(
@@ -75,10 +74,10 @@ class MockDB(TestCase):
         with sshtunnel.SSHTunnelForwarder(
             ("ssh.pythonanywhere.com"),
             **sshconfig,
-                remote_bind_address=(
-                        "***REMOVED***.mysql.pythonanywhere-services.com",
-                        3306,
-                ),
+            remote_bind_address=(
+                "***REMOVED***.mysql.pythonanywhere-services.com",
+                3306,
+            ),
         ) as tunnel:
             cnx = mysql.connector.connect(
                 **testconfig,

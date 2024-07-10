@@ -3,7 +3,6 @@ import random
 import product
 from paho.mqtt import client as mqtt_client
 
-import sys
 
 broker = "192.168.2.186"
 port = 1883
@@ -32,7 +31,7 @@ def connect_mqtt() -> mqtt_client:
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
         try:
-            if msg.topic is "arduino/barcode":
+            if msg.topic == "arduino/barcode":
                 barcodeValue = str(msg.payload.decode("utf-8"))
                 product.barcode = barcodeValue.replace("\r", "")
                 print(product.barcode)
@@ -40,7 +39,7 @@ def subscribe(client: mqtt_client):
             else:
                 print("barcode not sent")
 
-            if msg.topic is "arduino/delete":
+            if msg.topic == "arduino/delete":
                 delMes = msg.payload.decode()
                 print("delete status: " + delMes)
                 product.deleteStatus = True
