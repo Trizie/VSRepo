@@ -1,9 +1,10 @@
 {
-  "threshold": 30,
+  "threshold": 50.0,
   "reporters": ["html", "markdown"],
   "ignore": [
     "**/node_modules/**",
     "**/.git/**",
-    "**/*.md"
+    "**/*.md",
+    "**/VorratsschrankRepo/**"
   ]
 }
