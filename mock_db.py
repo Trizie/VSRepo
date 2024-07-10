@@ -54,7 +54,7 @@ class MockDB(TestCase):
                 else:
                     print(err.msg)
             else:
-                print("OK")
+                print("OK, table added")
 
             insert_data_query = """INSERT INTO `lebensmittel` (`Barcode`, `LebensmittelName`, `Anzahl`) VALUES
                                 ('815', 'Testprodukt', 7),
