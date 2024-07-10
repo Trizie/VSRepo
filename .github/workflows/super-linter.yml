@@ -8,9 +8,9 @@ name: Lint Code Base
 
 on:
   push:
-    branches: [ "ssh" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "ssh" ]
+    branches: [ "main" ]
 jobs:
   run-lint:
     runs-on: ubuntu-latest
