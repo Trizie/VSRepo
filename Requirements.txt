@@ -5,6 +5,7 @@ simplejson==3.16.0
 requests==2.22.0
 paho-mqtt==1.6.1
 sshtunnel==0.4.0
+python-dotenv==1.0.1
 
 
 
