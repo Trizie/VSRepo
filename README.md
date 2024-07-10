@@ -1,6 +1,7 @@
 # Vorratsschrank - Scannersoftware
 
-![Build Status](https://github.com/Trizie/VorratsschrankRepo/blob/main/.github/workflows/python-app/badge.svg)
+
+![Build Status](https://github.com/Trizie/VorratsschrankRepo/actions/workflows/super-linter.yaml/badge.svg)
 
 [![Python 3.9](https://img.shields.io/badge/Python-3.9-green.svg)](https://shields.io/)
 
