@@ -3,7 +3,6 @@ import random
 import product
 from paho.mqtt import client as mqtt_client
 
-
 broker = "192.168.2.186"
 port = 1883
 topic = "arduino/barcode"
