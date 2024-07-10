@@ -1,14 +1,13 @@
+import os
 from unittest import TestCase
 from unittest.mock import patch
 
 import mysql.connector
 import product
+import sshtunnel
+from dotenv import load_dotenv
 from mysql.connector import errorcode
 
-import sshtunnel
-
-import os
-from dotenv import load_dotenv, dotenv_values
 
 load_dotenv()
 
@@ -28,9 +27,12 @@ class MockDB(TestCase):
     @classmethod
     def setUpClass(cls):
         with sshtunnel.SSHTunnelForwarder(
-                ('ssh.pythonanywhere.com'),
-                **sshconfig,
-                remote_bind_address=('***REMOVED***.mysql.pythonanywhere-services.com', 3306)
+            ("ssh.pythonanywhere.com"),
+            **sshconfig,
+            remote_bind_address=(
+                    "***REMOVED***.mysql.pythonanywhere-services.com",
+                    3306,
+            ),
         ) as tunnel:
             cnx = mysql.connector.connect(
                 **testconfig,
@@ -71,9 +73,12 @@ class MockDB(TestCase):
     @classmethod
     def tearDownClass(cls):
         with sshtunnel.SSHTunnelForwarder(
-                ('ssh.pythonanywhere.com'),
-                **sshconfig,
-                remote_bind_address=('***REMOVED***.mysql.pythonanywhere-services.com', 3306)
+            ("ssh.pythonanywhere.com"),
+            **sshconfig,
+                remote_bind_address=(
+                        "***REMOVED***.mysql.pythonanywhere-services.com",
+                        3306,
+                ),
         ) as tunnel:
             cnx = mysql.connector.connect(
                 **testconfig,

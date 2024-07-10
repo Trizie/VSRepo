@@ -1,6 +1,9 @@
 import random
+
 import product
 from paho.mqtt import client as mqtt_client
+
+import sys
 
 broker = "192.168.2.186"
 port = 1883
@@ -29,7 +32,7 @@ def connect_mqtt() -> mqtt_client:
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
         try:
-            if msg.topic == "arduino/barcode":
+            if msg.topic is "arduino/barcode":
                 barcodeValue = str(msg.payload.decode("utf-8"))
                 product.barcode = barcodeValue.replace("\r", "")
                 print(product.barcode)
@@ -37,7 +40,7 @@ def subscribe(client: mqtt_client):
             else:
                 print("barcode not sent")
 
-            if msg.topic == "arduino/delete":
+            if msg.topic is "arduino/delete":
                 delMes = msg.payload.decode()
                 print("delete status: " + delMes)
                 product.deleteStatus = True
@@ -45,7 +48,7 @@ def subscribe(client: mqtt_client):
                 print("delete message not sent")
                 product.deleteStatus = False
 
-            if product.barcodeStatus == True and product.deleteStatus == True:
+            if product.barcodeStatus is True and product.deleteStatus is True:
                 print(
                     "Beide Statusmeldungen (Barcodestatus und Löschstatus) sind angekommen."
                 )
@@ -72,8 +75,9 @@ def subscribe(client: mqtt_client):
                     "Es sind nicht beide Statusmeldungen (Barcodestatus und Löschstatus) angekommmen"
                 )
 
-        except:
-            print("on_message error")
+        except Exception as err:
+            print(f"Unexpected {err=}, {type(err)=}")
+            raise
 
     client.subscribe(topic)
     client.subscribe(deleteTopic)
