@@ -34,8 +34,8 @@ jobs:
       - name: Create env file
         run: |
           {
-          echo MYSQL_USER="***REMOVED***"
-          echo MYSQL_PASSWORD="***REMOVED***"
+          echo MYSQL_USER=${{ secrets.mysql_user }}
+          echo MYSQL_PASSWORD=${{ secrets.mysql_password }}
           echo MYSQL_DB="***REMOVED***\$database"
           echo MYSQL_HOST="127.0.0.1"
           echo MYSQL_DB_MOCK="***REMOVED***\$mockdatabase"
