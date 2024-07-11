@@ -1,6 +1,7 @@
 # from github-marketplace
 
----name: Python application
+---
+name: Python application
 on:
   push:
     branches: ["main"]
