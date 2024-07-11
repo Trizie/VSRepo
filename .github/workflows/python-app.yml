@@ -37,7 +37,7 @@ jobs:
         echo MYSQL_USER="***REMOVED***" > .env
         echo MYSQL_PASSWORD="***REMOVED***" >> .env
         echo MYSQL_DB="***REMOVED***$database" >> .env
-        echo -h MYSQL_HOST="127.0.0.1" >> .env
+        echo MYSQL_HOST="127.0.0.1" >> .env
         echo MYSQL_DB_MOCK="***REMOVED***$mockdatabase" >> .env
         echo SSH_USER="***REMOVED***" >> .env
         echo SSH_PASSWORD="***REMOVED***" >> .env
