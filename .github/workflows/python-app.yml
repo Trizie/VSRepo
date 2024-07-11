@@ -1,11 +1,10 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+# from github-marketplace
 
 name: Python application
-
+  ---
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 
 jobs:
@@ -21,26 +20,26 @@ jobs:
       MODE: "dev"
       
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version}}
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version}}
         
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r ./Requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ./Requirements.txt
 
-    - name: Create env file
-      run: |
-        echo MYSQL_USER="***REMOVED***" > .env
-        echo MYSQL_PASSWORD="***REMOVED***" >> .env
-        echo MYSQL_DB="***REMOVED***\$database" >> .env
-        echo MYSQL_HOST="127.0.0.1" >> .env
-        echo MYSQL_DB_MOCK="***REMOVED***\$mockdatabase" >> .env
-        echo SSH_USER="***REMOVED***" >> .env
-        echo SSH_PASSWORD="***REMOVED***" >> .env
+      - name: Create env file
+        run: |
+          echo MYSQL_USER="***REMOVED***" > .env
+          echo MYSQL_PASSWORD="***REMOVED***" >> .env
+          echo MYSQL_DB="***REMOVED***\$database" >> .env
+          echo MYSQL_HOST="127.0.0.1" >> .env
+          echo MYSQL_DB_MOCK="***REMOVED***\$mockdatabase" >> .env
+          echo SSH_USER="***REMOVED***" >> .env
+          echo SSH_PASSWORD="***REMOVED***" >> .env
 
-    - name: Test Code
-      run: python ./test_product.py
+      - name: Test Code
+        run: python ./test_product.py
