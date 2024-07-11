@@ -32,5 +32,16 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r ./Requirements.txt
 
+    - name: Create env file
+      run: |
+        echo MYSQL_USER="***REMOVED***"
+        echo MYSQL_PASSWORD="***REMOVED***"
+        echo MYSQL_DB="***REMOVED***$database"
+        echo MYSQL_HOST="127.0.0.1"
+        echo MYSQL_DB_MOCK="***REMOVED***$mockdatabase"
+        echo SSH_USER="***REMOVED***"
+        echo SSH_PASSWORD="***REMOVED***"
+        cat .env
+
     - name: Test Code
       run: python ./test_product.py
