@@ -36,11 +36,11 @@ jobs:
           {
           echo MYSQL_USER=${{ secrets.mysql_user }}
           echo MYSQL_PASSWORD=${{ secrets.mysql_password }}
-          echo MYSQL_DB="***REMOVED***\$database"
-          echo MYSQL_HOST="127.0.0.1"
-          echo MYSQL_DB_MOCK="***REMOVED***\$mockdatabase"
-          echo SSH_USER="***REMOVED***"
-          echo SSH_PASSWORD="***REMOVED***" 
+          echo MYSQL_DB=${{ secrets.mysql_db }}
+          echo MYSQL_HOST=${{ secrets.mysql_host }}
+          echo MYSQL_DB_MOCK=${{ secrets.mysql_db_mock }}
+          echo SSH_USER=${{ secrets.ssh_user }}
+          echo SSH_PASSWORD=${{ secrets.ssh_password }}
           } >> .env
 
       - name: Test Code
