@@ -32,6 +32,7 @@ def processing_barcode(delMes):
     product1.barcodeStatus = False
     product1.deleteStatus = False
     productName = product1.get_productName()
+    productCategory = product1.get_productCategory()
 
     if not product1.check_delete(delMes):
         print("Programm ist im Speichermodus")
@@ -40,7 +41,7 @@ def processing_barcode(delMes):
             product1.raise_amount_of_product_in_DB()
         elif product1.check_DB_contains_barcode() == "False":
             print("Produkt ist neu")
-            product1.add_product_to_DB(productName)
+            product1.add_product_to_DB(productName, productCategory)
         else:
             print("Es gibt ein Problem mit dem Checken des Barcodes")
     else:

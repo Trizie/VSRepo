@@ -12,6 +12,13 @@ class TestProduct(MockDB):
             testObject.barcode = "4015533041525"
             self.assertEqual(testObject.get_productName(), "Haferdrink")
 
+    def test_get_productCategory(self):
+        with patch.object(Product, "__init__", lambda x, y: None):
+            testObject = Product(None)
+            testObject.barcode = "4388810057817"
+            liste = "Getränke, Wasser, Quellwasser, Mineralwasser, Alkoholfreie Getränke, Natürliches Mineralwasser"
+            self.assertEqual(testObject.get_productCategory(), liste)
+
     # def test_get_amount_from_DB(self):
     #    with patch.object(Product, "__init__", lambda x, y: None):
     #        testObject = Product(None)
@@ -32,7 +39,7 @@ class TestProduct(MockDB):
             testObject.barcode = 110
             testObject.amount = 1
         with self.mock_db_config:
-            self.assertEqual(testObject.add_product_to_DB("Banana"), "True")
+            self.assertEqual(testObject.add_product_to_DB("Banana", "Testkategorie_3" ), "True")
 
     def test_check_delete(self):
         self.assertEqual(Product.check_delete(1, "true"), True)
