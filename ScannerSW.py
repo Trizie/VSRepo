@@ -3,7 +3,7 @@ import random
 import product
 from paho.mqtt import client as mqtt_client
 
-broker = "192.168.2.186"
+broker = "192.168.2.188"
 port = 1883
 topic = "arduino/barcode"
 deleteTopic = "arduino/delete"
@@ -27,13 +27,32 @@ def connect_mqtt() -> mqtt_client:
     return client
 
 
+def processing_barcode(delMes):
+    product1.barcodeStatus = False
+    product1.deleteStatus = False
+    productName = product1.get_productName()
+
+    if not product1.check_delete(delMes):
+        print("Programm ist im Speichermodus")
+        if product1.check_DB_contains_barcode() == "True":
+            print("Produkt existiert schon")
+            product1.raise_amount_of_product_in_DB()
+        elif product1.check_DB_contains_barcode() == "False":
+            print("Produkt ist neu")
+            product1.add_product_to_DB(productName)
+        else:
+            print("Es gibt ein Problem mit dem Checken des Barcodes")
+    else:
+        print("Produkt wird gelöscht")
+        product1.delete_product_from_DB()
+
+
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
         try:
             if msg.topic == "arduino/barcode":
                 barcodeValue = str(msg.payload.decode("utf-8"))
                 product1.barcode = barcodeValue.replace("\r", "")
-                print(product1.barcode)
                 product1.barcodeStatus = True
             else:
                 print("barcode not sent")
@@ -48,29 +67,12 @@ def subscribe(client: mqtt_client):
 
             if product1.barcodeStatus is True and product1.deleteStatus is True:
                 print(
-                    "Beide Statusmeldungen (Barcodestatus und Löschstatus) sind angekommen."
+                    "Barcodestatus und Löschstatus wurden uebermittelt. Programm startet."
                 )
-                product1.barcodeStatus = False
-                product1.deleteStatus = False
-                productName = product1.get_productName()
-
-                if not product1.check_delete(delMes):
-                    print("Programm ist im Speichermodus")
-                    if product1.check_DB_contains_barcode() == "True":
-                        print("Produkt existiert schon")
-                        product1.raise_amount_of_product_in_DB()
-                    elif product1.check_DB_contains_barcode() == "False":
-                        print("Produkt ist neu")
-                        product1.add_product_to_DB(productName)
-                    else:
-                        print("Es gibt ein Problem mit dem Checken des Barcodes")
-                else:
-                    print("Produkt wird gelöscht")
-                    product1.delete_product_from_DB()
-
+                processing_barcode(delMes)
             else:
                 print(
-                    "Es sind nicht beide Statusmeldungen (Barcodestatus und Löschstatus) angekommmen"
+                    "Es sind nicht beide Statusmeldungen angekommmen. Programm kann nicht starten."
                 )
 
         except Exception as err:
