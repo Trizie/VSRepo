@@ -9,7 +9,7 @@ topic = "arduino/barcode"
 deleteTopic = "arduino/delete"
 client_id = f"subscribe-{random.randint(0, 100)}"
 
-product = product.Product(0, False, False, False, 1)
+product1 = product.Product(0, False, False, False, 1)
 
 
 def connect_mqtt() -> mqtt_client:
@@ -32,41 +32,41 @@ def subscribe(client: mqtt_client):
         try:
             if msg.topic == "arduino/barcode":
                 barcodeValue = str(msg.payload.decode("utf-8"))
-                product.barcode = barcodeValue.replace("\r", "")
-                print(product.barcode)
-                product.barcodeStatus = True
+                product1.barcode = barcodeValue.replace("\r", "")
+                print(product1.barcode)
+                product1.barcodeStatus = True
             else:
                 print("barcode not sent")
 
             if msg.topic == "arduino/delete":
                 delMes = msg.payload.decode()
                 print("delete status: " + delMes)
-                product.deleteStatus = True
+                product1.deleteStatus = True
             else:
                 print("delete message not sent")
-                product.deleteStatus = False
+                product1.deleteStatus = False
 
-            if product.barcodeStatus is True and product.deleteStatus is True:
+            if product1.barcodeStatus is True and product1.deleteStatus is True:
                 print(
                     "Beide Statusmeldungen (Barcodestatus und Löschstatus) sind angekommen."
                 )
-                product.barcodeStatus = False
-                product.deleteStatus = False
-                productName = product.get_productName()
+                product1.barcodeStatus = False
+                product1.deleteStatus = False
+                productName = product1.get_productName()
 
-                if not product.check_delete(delMes):
+                if not product1.check_delete(delMes):
                     print("Programm ist im Speichermodus")
-                    if product.check_DB_contains_barcode() == "True":
+                    if product1.check_DB_contains_barcode() == "True":
                         print("Produkt existiert schon")
-                        product.raise_amount_of_product_in_DB()
-                    elif product.check_DB_contains_barcode() == "False":
+                        product1.raise_amount_of_product_in_DB()
+                    elif product1.check_DB_contains_barcode() == "False":
                         print("Produkt ist neu")
-                        product.add_product_to_DB(productName)
+                        product1.add_product_to_DB(productName)
                     else:
                         print("Es gibt ein Problem mit dem Checken des Barcodes")
                 else:
                     print("Produkt wird gelöscht")
-                    product.delete_product_from_DB()
+                    product1.delete_product_from_DB()
 
             else:
                 print(
