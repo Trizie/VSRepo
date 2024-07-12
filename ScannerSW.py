@@ -75,7 +75,6 @@ def subscribe(client: mqtt_client):
 
         except Exception as err:
             print(f"Unexpected {err=}, {type(err)=}")
-            raise
 
     client.subscribe(topic)
     client.subscribe(deleteTopic)
