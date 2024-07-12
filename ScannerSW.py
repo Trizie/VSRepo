@@ -1,4 +1,5 @@
 import random
+import threading
 
 import product
 from paho.mqtt import client as mqtt_client
@@ -69,7 +70,9 @@ def subscribe(client: mqtt_client):
                 print(
                     "Barcodestatus und Löschstatus wurden uebermittelt. Programm startet."
                 )
-                processing_barcode(delMes)
+                threading.Thread(
+                    target=processing_barcode, daemon=True, args=(delMes,)
+                ).start()
             else:
                 print(
                     "Es sind nicht beide Statusmeldungen angekommmen. Programm kann nicht starten."
