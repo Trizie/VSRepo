@@ -14,8 +14,8 @@ int taster = 7;
 int tasterstatus = 0;
 String deleteStatus = "false";
 
-char ssid[] = "***REMOVED***";    
-char pass[] = "***REMOVED***";  
+char ssid[] = "#########";
+char pass[] = "#########";
 
 WiFiClient WiFiClient;
 MqttClient mqttClient(WiFiClient);
