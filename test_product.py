@@ -39,7 +39,9 @@ class TestProduct(MockDB):
             testObject.barcode = 110
             testObject.amount = 1
         with self.mock_db_config:
-            self.assertEqual(testObject.add_product_to_DB("Banana", "Testkategorie_3" ), "True")
+            self.assertEqual(
+                testObject.add_product_to_DB("Banana", "Testkategorie_3"), "True"
+            )
 
     def test_check_delete(self):
         self.assertEqual(Product.check_delete(1, "true"), True)
