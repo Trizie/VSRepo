@@ -8,9 +8,18 @@ from product import Product
 class TestProduct(MockDB):
     def test_get_productName(self):
         with patch.object(Product, "__init__", lambda x, y: None):
+            # pylint: disable = no-value-for-parameter
             testObject = Product(None)
             testObject.barcode = "4015533041525"
             self.assertEqual(testObject.get_productName(), "Haferdrink")
+
+    def test_get_productCategory(self):
+        with patch.object(Product, "__init__", lambda x, y: None):
+            # pylint: disable = no-value-for-parameter
+            testObject = Product(None)
+            testObject.barcode = "4388810057817"
+            liste = "Getränke, Wasser, Quellwasser, Mineralwasser, Alkoholfreie Getränke, Natürliches Mineralwasser"
+            self.assertEqual(testObject.get_productCategory(), liste)
 
     # def test_get_amount_from_DB(self):
     #    with patch.object(Product, "__init__", lambda x, y: None):
@@ -21,6 +30,7 @@ class TestProduct(MockDB):
 
     def test_check_DB_contains_barcode(self):
         with patch.object(Product, "__init__", lambda x, y: None):
+            # pylint: disable = no-value-for-parameter
             testObject = Product(None)
             testObject.barcode = 185
         with self.mock_db_config:
@@ -28,11 +38,14 @@ class TestProduct(MockDB):
 
     def test_add_product_to_DB(self):
         with patch.object(Product, "__init__", lambda x, y: None):
+            # pylint: disable = no-value-for-parameter
             testObject = Product(None)
             testObject.barcode = 110
             testObject.amount = 1
         with self.mock_db_config:
-            self.assertEqual(testObject.add_product_to_DB("Banana"), "True")
+            self.assertEqual(
+                testObject.add_product_to_DB("Banana", "Testkategorie_3"), "True"
+            )
 
     def test_check_delete(self):
         self.assertEqual(Product.check_delete(1, "true"), True)
@@ -43,6 +56,7 @@ class TestProduct(MockDB):
         mock_get_amount_from_DB.return_value = 1
 
         with patch.object(Product, "__init__", lambda x, y: None):
+            # pylint: disable = no-value-for-parameter
             testObject = Product(None)
             testObject.barcode = 815
 
@@ -54,6 +68,7 @@ class TestProduct(MockDB):
         mock_get_amount_from_DB.return_value = 1
 
         with patch.object(Product, "__init__", lambda x, y: None):
+            # pylint: disable = no-value-for-parameter
             testObject = Product(None)
             testObject.barcode = 200
 
@@ -64,6 +79,7 @@ class TestProduct(MockDB):
     def test_decrease_amount_of_product_in_DB(self, mock_get_amount_from_DB):
         mock_get_amount_from_DB.return_value = 1
         with patch.object(Product, "__init__", lambda x, y: None):
+            # pylint: disable = no-value-for-parameter
             testObject = Product(None)
             testObject.barcode = 200
         with self.mock_db_config:
