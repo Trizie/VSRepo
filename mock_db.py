@@ -93,8 +93,8 @@ class MockDB(TestCase):
             cursor = cnx.cursor(dictionary=True)
 
             try:
-                #cursor.execute("DROP TABLE lebensmittel")
-                #cnx.commit()
+                cursor.execute("DROP TABLE lebensmittel")
+                cnx.commit()
                 cursor.close()
             except mysql.connector.Error:
                 print("Table does not exists. Dropping table failed")
