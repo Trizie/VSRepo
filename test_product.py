@@ -18,23 +18,24 @@ class TestProduct(MockDB):
             # pylint: disable = no-value-for-parameter
             testObject = Product(None)
             testObject.barcode = "4388810057817"
-            liste = "Getränke, Wasser, Quellwasser, Mineralwasser, Alkoholfreie Getränke, Natürliches Mineralwasser"
-            self.assertEqual(testObject.get_productCategory(), liste)
+            list = "Getränke, Wasser, Quellwasser, Mineralwasser, Alkoholfreie Getränke, Natürliches Mineralwasser"
+            self.assertEqual(testObject.get_productCategory(), list)
 
-    # def test_get_amount_from_DB(self):
-    #    with patch.object(Product, "__init__", lambda x, y: None):
-    #        testObject = Product(None)
-    #        testObject.barcode = 815
-    #    with self.mock_db_config:
-    #        self.assertEqual(testObject.get_amount_from_DB(), 7)
+    def test_get_amount_from_DB(self):
+        with patch.object(Product, "__init__", lambda x, y: None):
+            # pylint: disable = no-value-for-parameter
+            testObject = Product(None)
+            testObject.barcode = 100
+        with self.mock_db_config:
+            self.assertEqual(testObject.get_amount_from_DB(), 5)
 
     def test_check_DB_contains_barcode(self):
         with patch.object(Product, "__init__", lambda x, y: None):
             # pylint: disable = no-value-for-parameter
             testObject = Product(None)
-            testObject.barcode = 185
+            testObject.barcode = 200
         with self.mock_db_config:
-            self.assertEqual(testObject.check_DB_contains_barcode(), "False")
+            self.assertEqual(testObject.check_DB_contains_barcode(), "True")
 
     def test_add_product_to_DB(self):
         with patch.object(Product, "__init__", lambda x, y: None):

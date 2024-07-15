@@ -43,7 +43,7 @@ class MockDB(TestCase):
             query = """CREATE TABLE `lebensmittel` (
                       `Barcode` varchar(30) NOT NULL ,
                       `LebensmittelName` text NOT NULL,
-                      `Anzahl` int NOT NULL,
+                      `Anzahl` varchar(8) NOT NULL,
                       `Kategorie` varchar(30) NOT NULL
                     )"""
             try:
@@ -59,10 +59,14 @@ class MockDB(TestCase):
 
             insert_data_query = """INSERT INTO `lebensmittel`
                                 (`Barcode`, `LebensmittelName`, `Anzahl`, `Kategorie`) VALUES
-                                ('815', 'Testprodukt', 7, 'Testkategorie'),
-                                ('200', 'Testprodukt_2', 1, 'Testkategorie_2')"""
+                                ('200', 'Testprodukt', 1, 'Testkategorie_2')"""
+
+            insert_data_query_2 = """INSERT INTO `lebensmittel`
+                                            (`Barcode`, `LebensmittelName`, `Anzahl`, `Kategorie`) VALUES
+                                            ('100', 'Testprodukt_2', 5, 'Testkategorie_2')"""
             try:
                 cursor.execute(insert_data_query)
+                cursor.execute(insert_data_query_2)
                 cnx.commit()
             except mysql.connector.Error as err:
                 print("Data insertion to test_table failed \n" + err)
@@ -89,8 +93,8 @@ class MockDB(TestCase):
             cursor = cnx.cursor(dictionary=True)
 
             try:
-                cursor.execute("DROP TABLE lebensmittel")
-                cnx.commit()
+                #cursor.execute("DROP TABLE lebensmittel")
+                #cnx.commit()
                 cursor.close()
             except mysql.connector.Error:
                 print("Table does not exists. Dropping table failed")
