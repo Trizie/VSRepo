@@ -29,7 +29,7 @@ class MockDB(TestCase):
             ("ssh.pythonanywhere.com"),
             **sshconfig,
             remote_bind_address=(
-                "***REMOVED***.mysql.pythonanywhere-services.com",
+                "Stutzenstein.mysql.pythonanywhere-services.com",
                 3306,
             ),
         ) as tunnel:
@@ -81,7 +81,7 @@ class MockDB(TestCase):
             ("ssh.pythonanywhere.com"),
             **sshconfig,
             remote_bind_address=(
-                "***REMOVED***.mysql.pythonanywhere-services.com",
+                "Stutzenstein.mysql.pythonanywhere-services.com",
                 3306,
             ),
         ) as tunnel:
