@@ -5,8 +5,8 @@
 #include <ArduinoMqttClient.h>
 #include <WiFiNINA.h>
 
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 32 // OLED display height, in pixels
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 32
 #define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
@@ -20,7 +20,7 @@ char pass[] = "######";
 WiFiClient WiFiClient;
 MqttClient mqttClient(WiFiClient);
 
-const char broker[] = "192.168.2.188"; // Address of the MQTT server
+const char broker[] = "192.168.2.188";
 int        port     = 1883;
 const char topic[]  = "arduino/barcode";
 const char topic_del[]  = "arduino/delete";
@@ -73,7 +73,7 @@ void loop() {
   char input = ' ';
   
   display.clearDisplay();
-  display.setCursor(0, 0); //oled display
+  display.setCursor(0, 0);
   display.setTextSize(2);
   display.setTextColor(WHITE);
   display.print("Bitte Code scannen");
