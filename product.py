@@ -6,6 +6,8 @@ import requests
 import sshtunnel
 from dotenv import load_dotenv
 
+import dbclass
+
 load_dotenv()
 
 sshconfig = {
@@ -14,11 +16,12 @@ sshconfig = {
 }
 config = {
     "host": os.getenv("MYSQL_HOST"),
-    "user": os.getenv("MYSQL_USER"),
-    "passwd": os.getenv("MYSQL_PASSWORD"),
-    "db": os.getenv("MYSQL_DB"),
+    "username": os.getenv("MYSQL_USER"),
+    "password": os.getenv("MYSQL_PASSWORD"),
+    "database": os.getenv("MYSQL_DB"),
 }
 
+connection = dbclass.DBclass()
 
 class Product:
     def __init__(self, barcode, delete, barcodeStatus, deleteStatus, amount):
@@ -29,42 +32,19 @@ class Product:
         self.amount = amount
 
     def check_DB_contains_barcode(self):
-        sshtunnel.SSH_TIMEOUT = 10.0
-        sshtunnel.TUNNEL_TIMEOUT = 10.0
+        try:
+            select_query = """SELECT * FROM lebensmittel WHERE Barcode=%s"""
+            result = connection.select_query(select_query, self.barcode)
+            print(result)
+            if result == []:
+                return "False"
+            else:
+                return "True"
 
-        with sshtunnel.SSHTunnelForwarder(
-            ("ssh.pythonanywhere.com"),
-            **sshconfig,
-            remote_bind_address=(
-                "Stutzenstein.mysql.pythonanywhere-services.com",
-                3306,
-            ),
-        ) as tunnel:
-            connection = mysql.connector.connect(
-                **config,
-                port=tunnel.local_bind_port,
-            )
-            try:
-                cur = connection.cursor()
-                sql = "SELECT Barcode FROM lebensmittel WHERE Barcode=%s"
+        except Exception as exception:
+            print(exception)
+            print("Could not check if DB contains barcode.")
 
-                cur.execute(sql, (self.barcode,))
-                result = cur.fetchall()
-                print(result)
-                row_count = cur.rowcount
-                print("barcode checked function")
-                if row_count == 0:
-                    return "False"
-                else:
-                    return "True"
-
-            except mysql.connector.Error as err:
-                print(err.msg)
-
-            finally:
-                cur.close()
-                connection.close()
-                print("DB connection is closed")
 
     def get_productCategory(self):
         try:
@@ -102,79 +82,28 @@ class Product:
             return str(self.barcode)
 
     def get_amount_from_DB(self):
-        sshtunnel.SSH_TIMEOUT = 10.0
-        sshtunnel.TUNNEL_TIMEOUT = 10.0
+        try:
+            select_query = """SELECT Anzahl FROM lebensmittel WHERE Barcode=%s"""
+            result = connection.select_query(select_query, self.barcode)
+            amount = result[0][0]
+            number = int(amount)
+            return number
 
-        with sshtunnel.SSHTunnelForwarder(
-            ("ssh.pythonanywhere.com"),
-            **sshconfig,
-            remote_bind_address=(
-                "Stutzenstein.mysql.pythonanywhere-services.com",
-                3306,
-            ),
-        ) as tunnel:
-            connection = mysql.connector.connect(
-                **config,
-                port=tunnel.local_bind_port,
-            )
-            try:
-                cur = connection.cursor()
-                get_query = "SELECT Anzahl FROM lebensmittel WHERE Barcode=%s"
-
-                cur.execute(get_query, (self.barcode,))
-                value = cur.fetchall()
-                print(value)
-                print(type(value))
-                amount = value[0][0]
-                print(amount)
-                number = int(amount)
-                cur.close()
-                return number
-
-            except mysql.connector.Error as err:
-                print(err.msg)
-
-            finally:
-                connection.close()
-                print("DB connection is closed")
+        except Exception as exception:
+            print(exception)
 
     def add_product_to_DB(self, product, category):
-        sshtunnel.SSH_TIMEOUT = 10.0
-        sshtunnel.TUNNEL_TIMEOUT = 10.0
+        try:
+            insert_query = """INSERT INTO lebensmittel
+                            (LebensmittelName, Barcode, Anzahl, Kategorie)
+                            VALUES (%s, %s, %s, %s)"""
 
-        with sshtunnel.SSHTunnelForwarder(
-            ("ssh.pythonanywhere.com"),
-            **sshconfig,
-            remote_bind_address=(
-                "Stutzenstein.mysql.pythonanywhere-services.com",
-                3306,
-            ),
-        ) as tunnel:
-            cnx = mysql.connector.connect(
-                **config,
-                port=tunnel.local_bind_port,
-            )
-            try:
-                cur = cnx.cursor()
-                insert_query = """INSERT INTO lebensmittel
-                                (LebensmittelName, Barcode, Anzahl, Kategorie)
-                                VALUES (%s, %s, %s, %s)"""
+            val = product, self.barcode, self.amount, category
+            connection.insert_query(insert_query, val)
+            return "True"
+        except:
+            print("could not add product to DB")
 
-                val = product, self.barcode, self.amount, category
-                print(self.barcode)
-                cur.execute(insert_query, val)
-                cnx.commit()
-                print(cur.rowcount, "Record inserted successfully")
-                cur.close()
-                print("Product added")
-                return "True"
-
-            except mysql.connector.Error as err:
-                print(err.msg)
-
-            finally:
-                cnx.close()
-                print("DB connection is closed")
 
     def check_delete(self, msg):
         if msg == "true":
@@ -185,114 +114,42 @@ class Product:
         return delete
 
     def delete_product_from_DB(self):
-        sshtunnel.SSH_TIMEOUT = 10.0
-        sshtunnel.TUNNEL_TIMEOUT = 10.0
+        try:
+            amount = self.get_amount_from_DB()
 
-        with sshtunnel.SSHTunnelForwarder(
-            ("ssh.pythonanywhere.com"),
-            **sshconfig,
-            remote_bind_address=(
-                "Stutzenstein.mysql.pythonanywhere-services.com",
-                3306,
-            ),
-        ) as tunnel:
-            cnx = mysql.connector.connect(
-                **config,
-                port=tunnel.local_bind_port,
-            )
-            try:
-                cur = cnx.cursor()
-                amount = self.get_amount_from_DB()
+            if amount == 1:
+                connection.delete_query(self.barcode)
+                print("Record deleted successfully")
+                return "True"
 
-                if amount == 1:
-                    delete_query = """DELETE FROM lebensmittel WHERE Barcode = %s"""
-                    cur.execute(delete_query, (self.barcode,))
-                    cnx.commit()
-                    print(cur.rowcount, "Record deleted successfully")
-                    cur.close()
-                    return "True"
-
-                elif amount > 1:
-                    self.decrease_amount_of_product_in_DB()
-                    return "False"
-
-            except mysql.connector.Error as err:
-                print(err.msg)
-
-            finally:
-                cnx.close()
-                print("DB connection is closed")
+            elif amount > 1:
+                self.decrease_amount_of_product_in_DB()
+                return "False"
+        except:
+            print("exception")
 
     def raise_amount_of_product_in_DB(self):
-        sshtunnel.SSH_TIMEOUT = 10.0
-        sshtunnel.TUNNEL_TIMEOUT = 10.0
-
-        with sshtunnel.SSHTunnelForwarder(
-            ("ssh.pythonanywhere.com"),
-            **sshconfig,
-            remote_bind_address=(
-                "Stutzenstein.mysql.pythonanywhere-services.com",
-                3306,
-            ),
-        ) as tunnel:
-            cnx = mysql.connector.connect(
-                **config,
-                port=tunnel.local_bind_port,
+        try:
+            amount = self.get_amount_from_DB() + 1
+            update_query = (
+                """UPDATE lebensmittel SET Anzahl = %s WHERE Barcode = %s;"""
             )
-            try:
-                amount = self.get_amount_from_DB() + 1
-                cur = cnx.cursor()
+            val = amount, self.barcode
+            connection.insert_query(update_query, val)
+            return "True"
 
-                update_query = (
-                    """UPDATE lebensmittel SET Anzahl = %s WHERE Barcode = %s;"""
-                )
-                val = amount, self.barcode
-                cur.execute(update_query, val)
-                cnx.commit()
-                print(cur.rowcount, "Record updated successfully")
-                cur.close()
-                return "True"
-
-            except mysql.connector.Error as err:
-                print(err.msg)
-
-            finally:
-                cnx.close()
-                print("DB connection is closed")
+        except:
+            print("except")
 
     def decrease_amount_of_product_in_DB(self):
-        sshtunnel.SSH_TIMEOUT = 10.0
-        sshtunnel.TUNNEL_TIMEOUT = 10.0
-
-        with sshtunnel.SSHTunnelForwarder(
-            ("ssh.pythonanywhere.com"),
-            **sshconfig,
-            remote_bind_address=(
-                "Stutzenstein.mysql.pythonanywhere-services.com",
-                3306,
-            ),
-        ) as tunnel:
-            cnx = mysql.connector.connect(
-                **config,
-                port=tunnel.local_bind_port,
+        try:
+            amount = self.get_amount_from_DB() - 1
+            update_query = (
+                """UPDATE lebensmittel SET Anzahl = %s WHERE Barcode = %s;"""
             )
-            try:
-                amount = self.get_amount_from_DB() - 1
-                cur = cnx.cursor()
+            val = amount, self.barcode
+            connection.insert_query(update_query, val)
+            return "True"
 
-                update_query = (
-                    """UPDATE lebensmittel SET Anzahl = %s WHERE Barcode = %s;"""
-                )
-                val = amount, self.barcode
-                cur.execute(update_query, val)
-                cnx.commit()
-                print(cur.rowcount, "Record updated successfully")
-                cur.close()
-                return "True"
-
-            except mysql.connector.Error as err:
-                print(err.msg)
-
-            finally:
-                cnx.close()
-                print("DB connection is closed")
+        except:
+            print("except")

@@ -1,35 +1,34 @@
 import mysql.connector
 from mysql.connector import errorcode
 import sshtunnel
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+sshconfig = {
+    "ssh_username": os.getenv("SSH_USER"),
+    "ssh_password": os.getenv("SSH_PASSWORD"),
+}
+
+config = {
+    "host": os.getenv("MYSQL_HOST"),
+    "user": os.getenv("MYSQL_USER"),
+    "password": os.getenv("MYSQL_PASSWORD"),
+    "database": os.getenv("MYSQL_DB"),
+}
 
 class DBclass:
 
-    host = username = password = database = cnx = cur = None
-
-    def __init__(self, host, username, password, database, ssh_user, ssh_pw):
-        self.host = host
-        self.username = username
-        self.password = password
-        self.database = database
-        self.ssh_user = ssh_user
-        self. ssh_pw = ssh_pw
-
-    def insert_query(self, lebensmittelName, barcode, anzahl, kategorie):
-
-        config = {
-            'user': self.username,
-            'password': self.password,
-            'host': self.host,
-            'database': self.database
-            }
+    def insert_query(self, insert_query, *val):
 
         sshtunnel.SSH_TIMEOUT = 10.0
         sshtunnel.TUNNEL_TIMEOUT = 10.0
 
+
         with sshtunnel.SSHTunnelForwarder(
                 ("ssh.pythonanywhere.com"),
-                ssh_username=self.ssh_user,
-                ssh_password=self.ssh_pw,
+                **sshconfig,
                 remote_bind_address=(
                         "Stutzenstein.mysql.pythonanywhere-services.com",
                         3306,
@@ -41,12 +40,7 @@ class DBclass:
             )
             try:
                 self.cur = self.cnx.cursor()
-                insert_query = """INSERT INTO lebensmittel
-                                            (LebensmittelName, Barcode, Anzahl, Kategorie)
-                                            VALUES (%s, %s, %s, %s)"""
-
-                val = (lebensmittelName, barcode, anzahl, kategorie,)
-                self.cur.execute(insert_query, val)
+                self.cur.execute(insert_query, *val)
                 self.cnx.commit()
                 print(self.cur.rowcount, "Record inserted successfully")
                 self.cur.close()
@@ -59,23 +53,18 @@ class DBclass:
                     print(errorcode)
                 else:
                     print("insert query did not work")
+            finally:
+                self.cnx.close()
 
-    def select_query(self, barcode):
-
-        config = {
-            'user': self.username,
-            'password': self.password,
-            'host': self.host,
-            'database': self.database
-        }
+    def select_query(self, select_query, val):
 
         sshtunnel.SSH_TIMEOUT = 10.0
         sshtunnel.TUNNEL_TIMEOUT = 10.0
 
+
         with sshtunnel.SSHTunnelForwarder(
                 ("ssh.pythonanywhere.com"),
-                ssh_username=self.ssh_user,
-                ssh_password=self.ssh_pw,
+                **sshconfig,
                 remote_bind_address=(
                         "Stutzenstein.mysql.pythonanywhere-services.com",
                         3306,
@@ -87,9 +76,9 @@ class DBclass:
             )
             try:
                 self.cur = self.cnx.cursor()
-                sqlstatement = """SELECT Anzahl FROM lebensmittel WHERE Barcode=%s"""
-                self.cur.execute(sqlstatement, (barcode,))
+                self.cur.execute(select_query, (val,))
                 value = self.cur.fetchall()
+                print(value)
                 return value
             except mysql.connector.Error as err:
                 if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -98,23 +87,18 @@ class DBclass:
                     print(errorcode)
                 else:
                     print("sth didn't work")
+            finally:
+                self.cnx.close()
+
 
     def delete_query(self, barcode):
-
-        config = {
-            'user': self.username,
-            'password': self.password,
-            'host': self.host,
-            'database': self.database
-            }
 
         sshtunnel.SSH_TIMEOUT = 10.0
         sshtunnel.TUNNEL_TIMEOUT = 10.0
 
         with sshtunnel.SSHTunnelForwarder(
                 ("ssh.pythonanywhere.com"),
-                ssh_username=self.ssh_user,
-                ssh_password=self.ssh_pw,
+                **sshconfig,
                 remote_bind_address=(
                         "Stutzenstein.mysql.pythonanywhere-services.com",
                         3306,
@@ -138,7 +122,8 @@ class DBclass:
                     print(errorcode)
                 else:
                     print("delete query didn't work")
+            finally:
+                self.cnx.close()
 
     def disconnect(self):
-        self.cnx.close()
-        print()
+        pass

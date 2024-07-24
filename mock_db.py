@@ -4,6 +4,7 @@ from unittest.mock import patch
 
 import mysql.connector
 import product
+import dbclass
 import sshtunnel
 from dotenv import load_dotenv
 from mysql.connector import errorcode
@@ -14,11 +15,12 @@ sshconfig = {
     "ssh_username": os.getenv("SSH_USER"),
     "ssh_password": os.getenv("SSH_PASSWORD"),
 }
+
 testconfig = {
     "host": os.getenv("MYSQL_HOST"),
     "user": os.getenv("MYSQL_USER"),
-    "passwd": os.getenv("MYSQL_PASSWORD"),
-    "db": os.getenv("MYSQL_DB_MOCK"),
+    "password": os.getenv("MYSQL_PASSWORD"),
+    "database": os.getenv("MYSQL_DB_MOCK"),
 }
 
 
@@ -74,6 +76,7 @@ class MockDB(TestCase):
             cnx.close()
 
             cls.mock_db_config = patch.dict(product.config, testconfig)
+            cls.mock_db_config = patch.dict(dbclass.config, testconfig)
 
     @classmethod
     def tearDownClass(cls):
