@@ -1,12 +1,11 @@
 import unittest
 from unittest.mock import patch
 
-from mock_db import MockDB
 from product import Product
 from dbclass import DBclass
 
 
-class TestProduct(MockDB):
+class TestProduct(unittest.TestCase):
     def test_get_productName(self):
         with patch.object(Product, "__init__", lambda x, y: None):
             # pylint: disable = no-value-for-parameter

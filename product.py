@@ -10,18 +10,16 @@ import dbclass
 
 load_dotenv()
 
-sshconfig = {
-    "ssh_username": os.getenv("SSH_USER"),
-    "ssh_password": os.getenv("SSH_PASSWORD"),
-}
 config = {
     "host": os.getenv("MYSQL_HOST"),
-    "username": os.getenv("MYSQL_USER"),
+    "user": os.getenv("MYSQL_USER"),
     "password": os.getenv("MYSQL_PASSWORD"),
     "database": os.getenv("MYSQL_DB"),
+    "ssh_user": os.getenv("SSH_USER"),
+    "ssh_pw": os.getenv("SSH_PASSWORD"),
 }
 
-connection = dbclass.DBclass()
+connection = dbclass.DBclass(**config)
 
 class Product:
     def __init__(self, barcode, delete, barcodeStatus, deleteStatus, amount):
@@ -35,7 +33,6 @@ class Product:
         try:
             select_query = """SELECT * FROM lebensmittel WHERE Barcode=%s"""
             result = connection.select_query(select_query, self.barcode)
-            print(result)
             if result == []:
                 return "False"
             else:
@@ -70,7 +67,6 @@ class Product:
             product = requests.get(urlBarcode)
             data = json.loads(product.text)
             name = data["product"]["product_name"]
-            print(name)
             return name
 
         except requests.HTTPError as exception:
@@ -110,7 +106,6 @@ class Product:
             delete = True
         else:
             delete = False
-            print("nicht löschen")
         return delete
 
     def delete_product_from_DB(self):
