@@ -69,7 +69,7 @@ class TestProduct(unittest.TestCase):
     @patch.object(DBclass, "insert_query")
     @patch("product.Product.get_amount_from_DB")
     def test_raise_amount_of_product_in_DB(
-            self, mock_get_amount_from_DB, mock_insert_query
+        self, mock_get_amount_from_DB, mock_insert_query
     ):
         mock_get_amount_from_DB.return_value = 1
         with patch.object(Product, "__init__", lambda x, y: None):
@@ -81,7 +81,7 @@ class TestProduct(unittest.TestCase):
     @patch.object(DBclass, "insert_query")
     @patch("product.Product.get_amount_from_DB")
     def test_decrease_amount_of_product_in_DB(
-            self, mock_get_amount_from_DB, mock_insert_query
+        self, mock_get_amount_from_DB, mock_insert_query
     ):
         mock_get_amount_from_DB.return_value = 3
         with patch.object(Product, "__init__", lambda x, y: None):

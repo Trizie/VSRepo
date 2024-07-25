@@ -24,8 +24,8 @@ class DBclass:
             ssh_username=self.ssh_user,
             ssh_password=self.ssh_pw,
             remote_bind_address=(
-                    "Stutzenstein.mysql.pythonanywhere-services.com",
-                    3306,
+                "Stutzenstein.mysql.pythonanywhere-services.com",
+                3306,
             ),
         ) as tunnel:
             self.cnx = mysql.connector.connect(
@@ -63,8 +63,8 @@ class DBclass:
             ssh_username=self.ssh_user,
             ssh_password=self.ssh_pw,
             remote_bind_address=(
-                    "Stutzenstein.mysql.pythonanywhere-services.com",
-                    3306,
+                "Stutzenstein.mysql.pythonanywhere-services.com",
+                3306,
             ),
         ) as tunnel:
             self.cnx = mysql.connector.connect(
@@ -99,8 +99,8 @@ class DBclass:
             ssh_username=self.ssh_user,
             ssh_password=self.ssh_pw,
             remote_bind_address=(
-                    "Stutzenstein.mysql.pythonanywhere-services.com",
-                    3306,
+                "Stutzenstein.mysql.pythonanywhere-services.com",
+                3306,
             ),
         ) as tunnel:
             self.cnx = mysql.connector.connect(
