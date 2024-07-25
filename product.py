@@ -1,12 +1,9 @@
 import json
 import os
 
-import mysql.connector
-import requests
-import sshtunnel
-from dotenv import load_dotenv
-
 import dbclass
+import requests
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -20,6 +17,7 @@ config = {
 }
 
 connection = dbclass.DBclass(**config)
+
 
 class Product:
     def __init__(self, barcode, delete, barcodeStatus, deleteStatus, amount):
@@ -41,7 +39,6 @@ class Product:
         except Exception as exception:
             print(exception)
             print("Could not check if DB contains barcode.")
-
 
     def get_productCategory(self):
         try:
@@ -100,7 +97,6 @@ class Product:
         except:
             print("could not add product to DB")
 
-
     def check_delete(self, msg):
         if msg == "true":
             delete = True
@@ -126,9 +122,7 @@ class Product:
     def raise_amount_of_product_in_DB(self):
         try:
             amount = self.get_amount_from_DB() + 1
-            update_query = (
-                """UPDATE lebensmittel SET Anzahl = %s WHERE Barcode = %s;"""
-            )
+            update_query = """UPDATE lebensmittel SET Anzahl = %s WHERE Barcode = %s;"""
             val = amount, self.barcode
             connection.insert_query(update_query, val)
             return "True"
@@ -139,9 +133,7 @@ class Product:
     def decrease_amount_of_product_in_DB(self):
         try:
             amount = self.get_amount_from_DB() - 1
-            update_query = (
-                """UPDATE lebensmittel SET Anzahl = %s WHERE Barcode = %s;"""
-            )
+            update_query = """UPDATE lebensmittel SET Anzahl = %s WHERE Barcode = %s;"""
             val = amount, self.barcode
             connection.insert_query(update_query, val)
             return "True"
