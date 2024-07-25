@@ -5,7 +5,7 @@ __pycache__/
 *$py.class
 
 # product.py
-
+mock_db.py
 # C extensions
 *.so
 

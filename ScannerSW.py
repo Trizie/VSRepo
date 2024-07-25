@@ -42,6 +42,7 @@ def processing_barcode(delMes):
         elif product1.check_DB_contains_barcode() == "False":
             print("Produkt ist neu")
             product1.add_product_to_DB(productName, productCategory)
+            print("Produkt wurde zur Datenbank hinzugefügt.")
         else:
             print("Es gibt ein Problem mit dem Checken des Barcodes")
     else:
@@ -69,7 +70,7 @@ def subscribe(client: mqtt_client):
 
             if product1.barcodeStatus is True and product1.deleteStatus is True:
                 print(
-                    "Barcodestatus und Löschstatus wurden uebermittelt. Programm startet."
+                    "Barcodestatus und Löschstatus wurden übermittelt. Programm startet."
                 )
                 threading.Thread(
                     target=processing_barcode, daemon=True, args=(delMes,)
