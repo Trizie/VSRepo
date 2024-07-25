@@ -3,11 +3,11 @@ from mysql.connector import errorcode
 import sshtunnel
 
 class DBclass:
-    host = username = password = database = cnx = cur = None
+    host = user = password = database = cnx = cur = None
 
     def __init__(self, host, user, password, database, ssh_user, ssh_pw):
         self.host = host
-        self.username = user
+        self.user = user
         self.password = password
         self.database = database
         self.ssh_user = ssh_user
@@ -20,8 +20,8 @@ class DBclass:
 
         with sshtunnel.SSHTunnelForwarder(
                 ("ssh.pythonanywhere.com"),
-                username=self.ssh_user,
-                password=self.ssh_pw,
+                ssh_username=self.ssh_user,
+                ssh_password=self.ssh_pw,
                 remote_bind_address=(
                         "Stutzenstein.mysql.pythonanywhere-services.com",
                         3306,
@@ -29,7 +29,7 @@ class DBclass:
         ) as tunnel:
             self.cnx = mysql.connector.connect(
                 host=self.host,
-                username=self.username,
+                user=self.user,
                 password=self.password,
                 database=self.database,
                 port=tunnel.local_bind_port,
@@ -60,8 +60,8 @@ class DBclass:
 
         with sshtunnel.SSHTunnelForwarder(
                 ("ssh.pythonanywhere.com"),
-                username=self.ssh_user,
-                password=self.ssh_pw,
+                ssh_username=self.ssh_user,
+                ssh_password=self.ssh_pw,
                 remote_bind_address=(
                         "Stutzenstein.mysql.pythonanywhere-services.com",
                         3306,
@@ -69,7 +69,7 @@ class DBclass:
         ) as tunnel:
             self.cnx = mysql.connector.connect(
                 host=self.host,
-                username=self.username,
+                user=self.user,
                 password=self.password,
                 database=self.database,
                 port=tunnel.local_bind_port,
@@ -78,7 +78,6 @@ class DBclass:
                 self.cur = self.cnx.cursor()
                 self.cur.execute(select_query, (val,))
                 value = self.cur.fetchall()
-                print(value)
                 return value
             except mysql.connector.Error as err:
                 if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -86,7 +85,7 @@ class DBclass:
                 elif err.errno == errorcode.ER_BAD_DB_ERROR:
                     print(errorcode)
                 else:
-                    print("sth didn't work")
+                    print("select query not successful")
             finally:
                 self.cnx.close()
 
@@ -98,8 +97,8 @@ class DBclass:
 
         with sshtunnel.SSHTunnelForwarder(
                 ("ssh.pythonanywhere.com"),
-                username=self.ssh_user,
-                password=self.ssh_pw,
+                ssh_username=self.ssh_user,
+                ssh_password=self.ssh_pw,
                 remote_bind_address=(
                         "Stutzenstein.mysql.pythonanywhere-services.com",
                         3306,
@@ -107,7 +106,7 @@ class DBclass:
         ) as tunnel:
             self.cnx = mysql.connector.connect(
                 host=self.host,
-                username=self.username,
+                user=self.user,
                 password=self.password,
                 database=self.database,
                 port=tunnel.local_bind_port,
