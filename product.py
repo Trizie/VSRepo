@@ -94,8 +94,9 @@ class Product:
             val = product, self.barcode, self.amount, category
             connection.insert_query(insert_query, val)
             return "True"
-        except:
-            print("could not add product to DB")
+
+        except Exception as exception:
+            print(exception)
 
     def check_delete(self, msg):
         if msg == "true":
@@ -116,8 +117,9 @@ class Product:
             elif amount > 1:
                 self.decrease_amount_of_product_in_DB()
                 return "False"
-        except:
-            print("exception")
+
+            except Exception as exception:
+                print(exception)
 
     def raise_amount_of_product_in_DB(self):
         try:
@@ -127,8 +129,8 @@ class Product:
             connection.insert_query(update_query, val)
             return "True"
 
-        except:
-            print("except")
+        except Exception as exception:
+            print(exception)
 
     def decrease_amount_of_product_in_DB(self):
         try:
@@ -138,5 +140,5 @@ class Product:
             connection.insert_query(update_query, val)
             return "True"
 
-        except:
-            print("except")
+        except Exception as exception:
+            print(exception)
