@@ -118,8 +118,8 @@ class Product:
                 self.decrease_amount_of_product_in_DB()
                 return "False"
 
-            except Exception as exception:
-                print(exception)
+        except Exception as exception:
+            print(exception)
 
     def raise_amount_of_product_in_DB(self):
         try:
