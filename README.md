@@ -1,6 +1,6 @@
 # Vorratsschrank - Scannersoftware
 
-![Build Status](https://github.com/Trizie/VSRepo/actions/workflows/super-linter/badge.svg)
+![Build Status](https://github.com/Trizie/VSRepo/actions/workflows/super-linter.yml/badge.svg)
 
 ![Build Status](https://github.com/Trizie/VSRepo/actions/workflows/python-app.yml/badge.svg)
 
