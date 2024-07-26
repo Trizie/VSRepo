@@ -1,7 +1,7 @@
-FROM python:3.10-alpine
+FROM python:latest
 
-ADD ScannerSW.py product.py ./
+ADD ScannerSW.py product.py dbclass.py ./
 
-RUN pip install paho-mqtt requests mysql-connector-python
+RUN pip install Requirements.txt
 
 CMD ["python", "./ScannerSW.py"]
