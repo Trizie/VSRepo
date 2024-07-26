@@ -3,12 +3,12 @@ import time
 
 from paho.mqtt import client as mqtt_client
 
-
 broker = "192.168.2.188"
 port = 1883
 topic = "arduino/barcode"
 deleteTopic = "arduino/delete"
 client_id = f"subscribe-{random.randint(0, 100)}"
+
 
 def connect_mqtt():
     def on_connect(client, userdata, flags, rc):
@@ -54,5 +54,5 @@ def run():
     client.loop_stop()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run()
